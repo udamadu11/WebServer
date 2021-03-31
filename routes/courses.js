@@ -1,18 +1,9 @@
-const Joi = require('joi');
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose'); 
+const {ValidSchema ,Courses} = require('../model/course');
 
 router.use(express.json());
-
-const Courses =  mongoose.model('courses',new mongoose.Schema({
-    name: {
-        type: String,
-        require : true,
-        minlength:5,
-        maxlength:50
-    },
-}));
 
 router.get('/', async(req,res)=>{
     const courses = await Courses.find().sort('name');
@@ -55,11 +46,5 @@ router.delete('/:id',async(req,res)=>{
 
 });
 
-function ValidSchema(course){
-    const schema = Joi.object({
-        name : Joi.string().min(3).required()
-    });
-    return schema.validate(course);
-}
 
 module.exports = router;
